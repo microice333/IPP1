@@ -2,15 +2,13 @@
 // Created by bartek on 15.03.17.
 //
 
-#include <stdbool.h>
-
 #ifndef PROJEKT_LIST_H
 #define PROJEKT_LIST_H
 #define SENTINEL_VALUE -1
 
 struct ListElement;
 
-typedef struct ListElement* List;
+typedef struct ListElement *List;
 
 struct ListElement {
     int number;
@@ -19,7 +17,7 @@ struct ListElement {
 
 List makeListElement(int number);
 
-void insertChildrenBetween(List left, List right, List leftChild, List rightChild);
+void insertListBetween(List left, List right, List leftEnd, List rightEnd);
 
 void connectTwoLists(List left, List right);
 

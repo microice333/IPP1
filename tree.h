@@ -6,14 +6,16 @@
 #define PROJEKT_TREE_H
 #define MAX_SIZE (1<<19)
 #define ROOT_NUMBER 0
+#define STARTING_NODES_NUMBER 1
+#define STARTING_LAST_ADDED_VALUE 0
 
 struct ListElement;
 
-typedef struct ListElement* List;
+typedef struct ListElement *List;
 
 struct NodeElement;
 
-typedef struct NodeElement* Node;
+typedef struct NodeElement *Node;
 
 struct NodeElement {
     List childrenSentinel;
@@ -26,7 +28,7 @@ struct Tree {
     int nodesNumber;
 };
 
-typedef struct Tree* TreePtr;
+typedef struct Tree *TreePtr;
 
 void addNode(TreePtr tree, int k);
 

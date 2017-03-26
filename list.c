@@ -2,14 +2,15 @@
 // Created by bartek on 15.03.17.
 //
 #include <stdlib.h>
+#include <stdbool.h>
 #include "list.h"
 
-static bool isSentintel(List list) {
+static bool isSentinel(List list) {
     return list->number == SENTINEL_VALUE;
 }
 
 List makeListElement(int number) {
-    List element = (List)malloc(sizeof(struct ListElement));
+    List element = (List) malloc(sizeof(struct ListElement));
 
     element->left = NULL;
     element->right = NULL;
@@ -18,19 +19,19 @@ List makeListElement(int number) {
     return element;
 }
 
-void insertChildrenBetween(List left, List right, List leftChild, List rightChild) {
-    if (isSentintel(right))
-        right->right = rightChild;
+void insertListBetween(List left, List right, List leftEnd, List rightEnd) {
+    if (isSentinel(right))
+        right->right = rightEnd;
     else
-        right->left = rightChild;
+        right->left = rightEnd;
 
-    if(isSentintel(left))
-        left->left = leftChild;
+    if (isSentinel(left))
+        left->left = leftEnd;
     else
-        left->right = leftChild;
+        left->right = leftEnd;
 
-    leftChild->left = left;
-    rightChild->right = right;
+    leftEnd->left = left;
+    rightEnd->right = right;
 }
 
 void insertAsRightmost(List elementToInsert, List sentinel) {
@@ -55,13 +56,13 @@ void insertOnRight(List elementToInsert, List leftBrother, List fatherSentinel) 
 }
 
 void connectTwoLists(List leftBrother, List rightBrother) {
-    if(isSentintel(leftBrother)) {
+    if (isSentinel(leftBrother)) {
         leftBrother->left = rightBrother;
     } else {
         leftBrother->right = rightBrother;
     }
 
-    if(isSentintel(rightBrother)) {
+    if (isSentinel(rightBrother)) {
         rightBrother->right = leftBrother;
     } else {
         rightBrother->left = leftBrother;

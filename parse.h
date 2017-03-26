@@ -11,17 +11,14 @@
 #define DELETE_SUBTREE 3
 #define SPLIT_NODE 4
 #define DELETE_DECIDING_LETTER_POSITION 7
-#define DEFAULT_W_VALUE 0
 #define MAX_LENGTH_INSTRUCTION 15
+#define OK_MESSAGE "OK\n"
+#define DIAGNOSTIC_MESSAGE "NODES: %d\n"
 
-struct Instruction {
-    int instructionCode;
-    int k;
-    int w;
-};
+struct Tree;
 
-typedef struct Instruction Instruction;
+typedef struct Tree *TreePtr;
 
-Instruction parse(char instructionName[]);
+void runParsing(TreePtr tree, bool diagnostic);
 
 #endif //PROJEKT_PARSE_H

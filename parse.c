@@ -3,51 +3,74 @@
 //
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "parse.h"
+#include "tree.h"
 
 static int deleteFunction(char instruction[]) {
     char decidingLetter = instruction[DELETE_DECIDING_LETTER_POSITION];
+    int deleteInstructionNumber;
+
     if (decidingLetter == 'N') {
-        return DELETE_NODE;
+        deleteInstructionNumber = DELETE_NODE;
     } else if (decidingLetter == 'S') {
-        return DELETE_SUBTREE;
+        deleteInstructionNumber = DELETE_SUBTREE;
     } else {
-        return WRONG_INSTRUCTION;
+        deleteInstructionNumber = WRONG_INSTRUCTION;
     }
+
+    return deleteInstructionNumber;
 }
 
-static int getInstruction(char instruction[]) {
+static int parseInstruction(char instruction[]) {
     char firstLetter = instruction[0];
+    int instructionNumber;
+
     if (firstLetter == 'A') {
-        return ADD_NODE;
+        instructionNumber = ADD_NODE;
     } else if (firstLetter == 'S') {
-        return SPLIT_NODE;
+        instructionNumber = SPLIT_NODE;
     } else if (firstLetter == 'R') {
-        return RIGHTMOST_CHILD;
+        instructionNumber = RIGHTMOST_CHILD;
     } else if (firstLetter == 'D') {
-        return deleteFunction(instruction);
+        instructionNumber = deleteFunction(instruction);
     } else {
-        return WRONG_INSTRUCTION;
+        instructionNumber = WRONG_INSTRUCTION;
     }
+
+    return instructionNumber;
 }
 
-Instruction parse(char instructionName[]) {
-    Instruction instruction;
-    int instructionValue;
-    int k;
-    int w = DEFAULT_W_VALUE;
+void runParsing(TreePtr tree, bool diagnostic) {
+    char instructionName[MAX_LENGTH_INSTRUCTION];
 
-    instructionValue = getInstruction(instructionName);
+    while ((scanf("%s", instructionName)) != EOF) {
+        int instruction = parseInstruction(instructionName);
+        int k;
+        int w;
+        scanf("%d", &k);
 
-    scanf("%d", &k);
+        if (instruction != WRONG_INSTRUCTION) {
+            if (instruction == RIGHTMOST_CHILD) {
+                rightmostChild(tree, k);
+            } else {
+                if (instruction == ADD_NODE) {
+                    addNode(tree, k);
+                } else if (instruction == DELETE_NODE) {
+                    deleteNode(tree, k);
+                } else if (instruction == DELETE_SUBTREE) {
+                    deleteSubtree(tree, k);
+                } else if (instruction == SPLIT_NODE) {
+                    scanf("%d", &w);
+                    splitNode(tree, k, w);
+                }
 
-    if (instructionValue == SPLIT_NODE)
-        scanf("%d", &w);
+                printf(OK_MESSAGE);
+            }
 
-    instruction.instructionCode = instructionValue;
-    instruction.k = k;
-    instruction.w = w;
-
-    return instruction;
+            if (diagnostic)
+                fprintf(stderr, DIAGNOSTIC_MESSAGE, tree->nodesNumber);
+        }
+    }
 }
 
